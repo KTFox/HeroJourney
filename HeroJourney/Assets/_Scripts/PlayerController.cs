@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float climbSpeed = 4f;
 
     private float defaultGravity;
+    private bool facingRight;
     private Vector2 moveInput;
     private BoxCollider2D foot;
     private Rigidbody2D rb;
@@ -25,19 +26,36 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        Move();
-        Climb();
+        // Move player
+        transform.position += new Vector3(moveInput.x * moveSpeed * Time.deltaTime, 0, 0);
+
+        // Player climbing
+        if (foot.IsTouchingLayers(LayerMask.GetMask("Ladder")))
+        {
+            rb.gravityScale = 0;
+            rb.velocity = new Vector2(0, 0);
+            transform.position += new Vector3(0, moveInput.y * climbSpeed * Time.deltaTime, 0);
+        }
+        else
+        {
+            rb.gravityScale = defaultGravity;
+        }
+
+        // Flip sprite when change direction move
+        if (moveInput.x > 0 && !facingRight)
+        {
+            FlipSprite();
+        }
+        else if (moveInput.x < 0 && facingRight)
+        {
+            FlipSprite();
+        }
     }
 
-    #region Movement
+    #region Movement input
     void OnMove(InputValue value)
     {
         moveInput.x = value.Get<float>();
-    }
-
-    void Move()
-    {
-        transform.position += new Vector3(moveInput.x * moveSpeed * Time.deltaTime, 0, 0);
     }
 
     void OnJump(InputValue value)
@@ -55,19 +73,15 @@ public class PlayerController : MonoBehaviour
     {
         moveInput.y = value.Get<float>();
     }
-
-    void Climb()
-    {
-        if (foot.IsTouchingLayers(LayerMask.GetMask("Ladder")))
-        {
-            rb.gravityScale = 0;
-            rb.velocity = new Vector2(0, 0);
-            transform.position += new Vector3(0, moveInput.y * climbSpeed * Time.deltaTime, 0);
-        }
-        else
-        {
-            rb.gravityScale = defaultGravity;
-        }
-    }
     #endregion
+
+    void FlipSprite()
+    {
+        Vector3 currentScale = transform.localScale;
+
+        currentScale.x *= -1;
+        transform.localScale = currentScale;
+
+        facingRight = !facingRight;
+    }
 }
