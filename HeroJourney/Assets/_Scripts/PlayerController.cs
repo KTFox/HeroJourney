@@ -5,18 +5,16 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] float moveSpeed = 8f;
     [SerializeField] float jumpSpeed = 850f;
-    [SerializeField] float climbSpeed;
+    [SerializeField] float climbSpeed = 4f;
 
     private float defaultGravity;
     private Vector2 moveInput;
     private BoxCollider2D foot;
-    private CapsuleCollider2D body;
     private Rigidbody2D rb;
 
     void Awake()
     {
         foot = gameObject.GetComponent<BoxCollider2D>();
-        body = gameObject.GetComponent<CapsuleCollider2D>();
         rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
@@ -44,7 +42,7 @@ public class PlayerController : MonoBehaviour
 
     void OnJump(InputValue value)
     {
-        if (foot.IsTouchingLayers(LayerMask.GetMask("Platform")) && !body.IsTouchingLayers(LayerMask.GetMask("Ladder")))
+        if (foot.IsTouchingLayers(LayerMask.GetMask("Platform")) && !foot.IsTouchingLayers(LayerMask.GetMask("Ladder")))
         {
             if (value.isPressed)
             {
@@ -60,10 +58,10 @@ public class PlayerController : MonoBehaviour
 
     void Climb()
     {
-        if (body.IsTouchingLayers(LayerMask.GetMask("Ladder")))
+        if (foot.IsTouchingLayers(LayerMask.GetMask("Ladder")))
         {
             rb.gravityScale = 0;
-
+            rb.velocity = new Vector2(0, 0);
             transform.position += new Vector3(0, moveInput.y * climbSpeed * Time.deltaTime, 0);
         }
         else
