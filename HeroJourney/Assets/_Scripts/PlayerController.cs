@@ -3,20 +3,29 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] float moveSpeed = 8f;
-    [SerializeField] float jumpSpeed = 850f;
-    [SerializeField] float climbSpeed = 4f;
-
-    private float defaultGravity;
-    private bool facingRight;
     private Vector2 moveInput;
+    [SerializeField] float moveSpeed = 500f;
+    [SerializeField] float jumpForce = 850f;
+    [SerializeField] float climbSpeed = 400f;
+    private float defaultGravity;
+
+    private bool facingRight;
+
     private BoxCollider2D foot;
     private Rigidbody2D rb;
 
+    enum AnimationState { Player_Idle, Player_Run, Player_Jump, Player_Climb, Player_Attack };
+    private Animator animator;
+    private string currentState;
+
+    [SerializeField] float attackDelay = 0.3f;
+    private bool isAttacking;
+
     void Awake()
     {
-        foot = gameObject.GetComponent<BoxCollider2D>();
-        rb = gameObject.GetComponent<Rigidbody2D>();
+        foot = GetComponent<BoxCollider2D>();
+        rb = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
     }
 
     void Start()
@@ -24,17 +33,16 @@ public class PlayerController : MonoBehaviour
         defaultGravity = rb.gravityScale;
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        // Move player
-        transform.position += new Vector3(moveInput.x * moveSpeed * Time.deltaTime, 0, 0);
+        // Player horizontal moving
+        rb.velocity = new Vector2(moveInput.x * moveSpeed * Time.deltaTime, rb.velocity.y);
 
-        // Player climbing
+        // Player ladder climbing
         if (foot.IsTouchingLayers(LayerMask.GetMask("Ladder")))
         {
             rb.gravityScale = 0;
-            rb.velocity = new Vector2(0, 0);
-            transform.position += new Vector3(0, moveInput.y * climbSpeed * Time.deltaTime, 0);
+            rb.velocity = new Vector2(rb.velocity.x, moveInput.y * climbSpeed * Time.deltaTime);
         }
         else
         {
@@ -50,9 +58,32 @@ public class PlayerController : MonoBehaviour
         {
             FlipSprite();
         }
+
+        // Change animation state
+        if (foot.IsTouchingLayers(LayerMask.GetMask("Platform")) && !isAttacking)
+        {
+            if (moveInput.x == 0)
+            {
+                ChangeAnimationState(AnimationState.Player_Idle.ToString());
+            }
+            else
+            {
+                ChangeAnimationState(AnimationState.Player_Run.ToString());
+            }
+        }   
+        if (!foot.IsTouchingLayers(LayerMask.GetMask("Platform")) && !isAttacking)
+        {
+            if (!foot.IsTouchingLayers(LayerMask.GetMask("Ladder")))
+            {
+                ChangeAnimationState(AnimationState.Player_Jump.ToString());
+            }
+            else
+            {
+                ChangeAnimationState(AnimationState.Player_Climb.ToString());
+            }
+        }       
     }
 
-    #region Movement input
     void OnMove(InputValue value)
     {
         moveInput.x = value.Get<float>();
@@ -64,7 +95,7 @@ public class PlayerController : MonoBehaviour
         {
             if (value.isPressed)
             {
-                rb.AddForce(new Vector2(0, jumpSpeed));
+                rb.AddForce(new Vector2(0, jumpForce));
             }
         }
     }
@@ -73,7 +104,24 @@ public class PlayerController : MonoBehaviour
     {
         moveInput.y = value.Get<float>();
     }
-    #endregion
+
+    void OnHit(InputValue value)
+    {
+        if (value.isPressed )
+        {
+            if (!isAttacking && !foot.IsTouchingLayers(LayerMask.GetMask("Ladder")))
+            {
+                isAttacking = true;
+                ChangeAnimationState(AnimationState.Player_Attack.ToString());
+                Invoke(nameof(AttackComplete), attackDelay);
+            }
+        }      
+    }
+
+    void AttackComplete()
+    {
+        isAttacking = false;
+    }
 
     void FlipSprite()
     {
@@ -83,5 +131,17 @@ public class PlayerController : MonoBehaviour
         transform.localScale = currentScale;
 
         facingRight = !facingRight;
+    }
+
+    void ChangeAnimationState(string newState)
+    {
+        // Stop the same animation from interrupting itself
+        if (currentState == newState) { return; }
+
+        // Play animation state
+        animator.Play(newState);
+
+        // Reassign the current state
+        currentState = newState;
     }
 }
