@@ -3,23 +3,24 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    private Vector2 moveInput;
+    [Header("Player info")]
     [SerializeField] float moveSpeed = 500f;
     [SerializeField] float jumpForce = 850f;
     [SerializeField] float climbSpeed = 400f;
+    [SerializeField] float attackDelay = 0.3f;
+
     private float defaultGravity;
-
     private bool facingRight;
-
+    private bool isAttacking;
+    private string currentState;
+    private Vector2 moveInput;
     private BoxCollider2D foot;
     private Rigidbody2D rb;
-
-    enum AnimationState { Player_Idle, Player_Run, Player_Jump, Player_Climb, Player_Attack };
     private Animator animator;
-    private string currentState;
+  
+    enum AnimationState { Player_Idle, Player_Run, Player_Jump, Player_Climb, Player_Attack };
 
-    [SerializeField] float attackDelay = 0.3f;
-    private bool isAttacking;
+
 
     void Awake()
     {
@@ -35,8 +36,7 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        // Player horizontal moving
-        rb.velocity = new Vector2(moveInput.x * moveSpeed * Time.deltaTime, rb.velocity.y);
+        rb.velocity = new Vector2(moveInput.x * moveSpeed * Time.deltaTime, rb.velocity.y); //Player horizontal moving
 
         // Player ladder climbing
         if (foot.IsTouchingLayers(LayerMask.GetMask("Ladder")))
@@ -107,7 +107,7 @@ public class PlayerController : MonoBehaviour
 
     void OnHit(InputValue value)
     {
-        if (value.isPressed )
+        if (value.isPressed)
         {
             if (!isAttacking && !foot.IsTouchingLayers(LayerMask.GetMask("Ladder")))
             {
@@ -135,13 +135,8 @@ public class PlayerController : MonoBehaviour
 
     void ChangeAnimationState(string newState)
     {
-        // Stop the same animation from interrupting itself
-        if (currentState == newState) { return; }
-
-        // Play animation state
-        animator.Play(newState);
-
-        // Reassign the current state
-        currentState = newState;
+        if (currentState == newState) { return; } //Stop the same animation from interrupting itself
+        animator.Play(newState); //Play animation state
+        currentState = newState; //Reassign the current state
     }
 }
