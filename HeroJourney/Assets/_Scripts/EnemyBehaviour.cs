@@ -9,13 +9,22 @@ public class EnemyBehaviour : MonoBehaviour
 
     [Header("Enemy info")]
     [SerializeField] float moveSpeed = 2f;
-    [SerializeField] float attackRange = 1f; //Range that enemy can attack player
+    [SerializeField] float attackRange = 1.5f; //Range that enemy can attack player
+    [SerializeField] float attackDelay = 1.5f; //Time between enemy attack actions
 
     private float distance; //Distance between player and enemy
+    private string currentState;
+    private bool isAttacking;
+    private Animator animator;
     private GameObject target;
     private Transform currentPoint;
 
+    enum AnimationState { BoneScimitar_Walk, BoneScimitar_Attack, BoneScimitar_Idle };
 
+    void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     void Start()
     {
@@ -29,11 +38,11 @@ public class EnemyBehaviour : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (detectArea.target != null) //Check whenever player entry detect area
+        if (detectArea.target != null) //Checking whenever player entries detect area
         {
             EnemyLogic();
         }
-        else if (detectArea.target == null)
+        else if (detectArea.target == null && !isAttacking)
         {
             EnemyPatrolling();
         }       
@@ -47,9 +56,16 @@ public class EnemyBehaviour : MonoBehaviour
         Vector3 rotation = transform.rotation.eulerAngles;
 
         // Chasing and attacking action when player in detecting area
-        if (attackRange < distance) 
+        if (attackRange < distance && !isAttacking) 
         {
+            ChangeAnimationState(AnimationState.BoneScimitar_Walk.ToString());
             transform.position = Vector2.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
+        }
+        else if (attackRange >= distance && !isAttacking)
+        {
+            isAttacking = true;
+            ChangeAnimationState(AnimationState.BoneScimitar_Attack.ToString());
+            Invoke(nameof(AttackComplete), attackDelay);
         }
 
         // Flip sprite while chasing player
@@ -61,13 +77,20 @@ public class EnemyBehaviour : MonoBehaviour
         {
             rotation.y = 180f;
         }
-
         transform.eulerAngles = rotation;
+    }
+
+    void AttackComplete()
+    {
+        ChangeAnimationState(AnimationState.BoneScimitar_Idle.ToString());
+        isAttacking = false;
     }
 
     void EnemyPatrolling()
     {
         Vector3 rotation = transform.rotation.eulerAngles;
+
+        ChangeAnimationState(AnimationState.BoneScimitar_Walk.ToString());
 
         // Enemy patrolling
         if (currentPoint == pointA)
@@ -98,11 +121,17 @@ public class EnemyBehaviour : MonoBehaviour
         }
     }
 
+    void ChangeAnimationState(string newState)
+    {
+        if (currentState == newState) { return; } //Stop the same animation from interrupting itself
+        animator.Play(newState); //Play animation state
+        currentState = newState; //Reassign the current state
+    }
+
     void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(pointA.position, 0.5f);
         Gizmos.DrawWireSphere(pointB.position, 0.5f);
         Gizmos.DrawLine(pointA.position, pointB.position);
-        Gizmos.DrawRay(transform.position, Vector3.left * attackRange);
     }
 }
