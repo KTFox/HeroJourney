@@ -3,23 +3,22 @@ using UnityEngine;
 public class EnemyBehaviour : MonoBehaviour
 {
     [Header("Set Up")]
+    [SerializeField] EnemyInfo info;
+    [SerializeField] Transform attackPoint;
     [SerializeField] Transform pointA;
     [SerializeField] Transform pointB;
     [SerializeField] DetectArea detectArea; //Checking area whenever player entry
 
     [Header("Enemy info")]
-    [SerializeField] float moveSpeed = 2f;
-    [SerializeField] float attackRange = 1.5f; //Range that enemy can attack player
-    [SerializeField] float attackDelay = 1.5f; //Time between enemy attack actions
+    [SerializeField] float health;
+    [SerializeField] float moveSpeed;
+    [SerializeField] float attackDamage;
+    [SerializeField] float attackRange; //Range that enemy can attack player
+    [SerializeField] float attackDelay; //Time between enemy attack actions
 
-    private float distance; //Distance between player and enemy
-    private string currentState;
     private bool isAttacking;
     private Animator animator;
-    private GameObject target;
     private Transform currentPoint;
-
-    enum AnimationState { BoneScimitar_Walk, BoneScimitar_Attack, BoneScimitar_Idle };
 
     void Awake()
     {
@@ -29,16 +28,16 @@ public class EnemyBehaviour : MonoBehaviour
     void Start()
     {
         currentPoint = pointA;
-    }
-
-    void Update()
-    {
-        SetPatrolPoint();   
+        health = info.health;
+        moveSpeed = info.moveSpeed;
+        attackDamage = info.damage;
+        attackRange = info.attackRange;
+        attackDelay = info.attackDelay;
     }
 
     void FixedUpdate()
     {
-        if (detectArea.target != null) //Checking whenever player entries detect area
+        if (detectArea.target != null)
         {
             EnemyLogic();
         }
@@ -50,47 +49,63 @@ public class EnemyBehaviour : MonoBehaviour
 
     void EnemyLogic()
     {
-        target = detectArea.target;
+        GameObject target = detectArea.target; //Player object
         var targetPos = new Vector2(target.transform.position.x, transform.position.y); //Player position
-        distance = Vector2.Distance(transform.position, target.transform.position); //Distance between player and enemy
-        Vector3 rotation = transform.rotation.eulerAngles;
+        float distance = Vector2.Distance(transform.position, targetPos) - 0.5f; //Distance between player and enemy
 
-        // Chasing and attacking action when player in detecting area
+        // Chasing and attacking action
         if (attackRange < distance && !isAttacking) 
         {
-            ChangeAnimationState(AnimationState.BoneScimitar_Walk.ToString());
+            animator.SetBool("isWalking", true);
             transform.position = Vector2.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
         }
         else if (attackRange >= distance && !isAttacking)
         {
             isAttacking = true;
-            ChangeAnimationState(AnimationState.BoneScimitar_Attack.ToString());
+            animator.SetBool("isWalking", false);
+            animator.SetTrigger("attack");
             Invoke(nameof(AttackComplete), attackDelay);
         }
 
-        // Flip sprite while chasing player
-        if (transform.position.x < targetPos.x)
+        // Deal damge to player
+
+        // Flip sprite
+        Vector3 rotation = transform.rotation.eulerAngles;
+        if (!isAttacking)
         {
-            rotation.y = 0f;
-        }
-        else if(transform.position.x > targetPos.x)
-        {
-            rotation.y = 180f;
-        }
-        transform.eulerAngles = rotation;
+            if (transform.position.x < targetPos.x)
+            {
+                rotation.y = 0f;
+            }
+            else if (transform.position.x > targetPos.x)
+            {
+                rotation.y = 180f;
+            }
+            transform.eulerAngles = rotation;
+        }      
     }
 
     void AttackComplete()
     {
-        ChangeAnimationState(AnimationState.BoneScimitar_Idle.ToString());
         isAttacking = false;
     }
 
     void EnemyPatrolling()
     {
         Vector3 rotation = transform.rotation.eulerAngles;
+        float distance = Vector2.Distance(transform.position, currentPoint.position);
 
-        ChangeAnimationState(AnimationState.BoneScimitar_Walk.ToString());
+        animator.SetBool("isWalking", true);
+
+        // Set patrol point
+        if (currentPoint == pointA && distance < 0.5f)
+        {
+            currentPoint = pointB;
+        }
+        else if (currentPoint == pointB && distance < 0.5f)
+        {
+            currentPoint = pointA;
+        }
 
         // Enemy patrolling
         if (currentPoint == pointA)
@@ -107,31 +122,11 @@ public class EnemyBehaviour : MonoBehaviour
         transform.eulerAngles = rotation; //Flip sprite
     }
 
-    void SetPatrolPoint()
-    {
-        float distance = Vector2.Distance(transform.position, currentPoint.position);
-
-        if (currentPoint == pointA && distance < 0.5f)
-        {
-            currentPoint = pointB;
-        }
-        else if (currentPoint == pointB && distance < 0.5f)
-        {
-            currentPoint = pointA;
-        }
-    }
-
-    void ChangeAnimationState(string newState)
-    {
-        if (currentState == newState) { return; } //Stop the same animation from interrupting itself
-        animator.Play(newState); //Play animation state
-        currentState = newState; //Reassign the current state
-    }
-
     void OnDrawGizmos()
     {
         Gizmos.DrawWireSphere(pointA.position, 0.5f);
         Gizmos.DrawWireSphere(pointB.position, 0.5f);
+        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
         Gizmos.DrawLine(pointA.position, pointB.position);
     }
 }

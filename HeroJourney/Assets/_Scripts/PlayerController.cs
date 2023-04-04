@@ -7,21 +7,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float moveSpeed = 500f;
     [SerializeField] float jumpForce = 850f;
     [SerializeField] float climbSpeed = 400f;
-    [SerializeField] float attackDelay = 0.3f;
+    [SerializeField] float attackDelay = 0.5f;
 
     private float defaultGravity;
     private bool facingRight;
     private bool isAttacking;
-    private string currentState;
     private Vector2 moveInput;
     private BoxCollider2D foot;
     private Rigidbody2D rb;
     private Animator animator;
   
-    enum AnimationState { Player_Idle, Player_Run, Player_Jump, Player_Climb, Player_Attack };
-
-
-
     void Awake()
     {
         foot = GetComponent<BoxCollider2D>();
@@ -44,12 +39,11 @@ public class PlayerController : MonoBehaviour
             rb.gravityScale = 0;
             rb.velocity = new Vector2(rb.velocity.x, moveInput.y * climbSpeed * Time.deltaTime);
         }
-        else
-        {
-            rb.gravityScale = defaultGravity;
-        }
+        else { rb.gravityScale = defaultGravity; }
 
-        // Flip sprite when change direction move
+        // Deal damage to enemy
+
+        // Flip 
         if (moveInput.x > 0 && !facingRight)
         {
             FlipSprite();
@@ -60,28 +54,15 @@ public class PlayerController : MonoBehaviour
         }
 
         // Change animation state
-        if (foot.IsTouchingLayers(LayerMask.GetMask("Platform")) && !isAttacking)
+        if (foot.IsTouchingLayers(LayerMask.GetMask("Platform")))
         {
-            if (moveInput.x == 0)
-            {
-                ChangeAnimationState(AnimationState.Player_Idle.ToString());
-            }
-            else
-            {
-                ChangeAnimationState(AnimationState.Player_Run.ToString());
-            }
-        }   
-        if (!foot.IsTouchingLayers(LayerMask.GetMask("Platform")) && !isAttacking)
+            animator.SetFloat("speed", Mathf.Abs(moveInput.x));
+            animator.SetBool("isJumping", false);
+        }
+        else if (!foot.IsTouchingLayers(LayerMask.GetMask("Platform")))
         {
-            if (!foot.IsTouchingLayers(LayerMask.GetMask("Ladder")))
-            {
-                ChangeAnimationState(AnimationState.Player_Jump.ToString());
-            }
-            else
-            {
-                ChangeAnimationState(AnimationState.Player_Climb.ToString());
-            }
-        }       
+            animator.SetBool("isJumping", true);
+        }
     }
 
     void OnMove(InputValue value)
@@ -112,7 +93,7 @@ public class PlayerController : MonoBehaviour
             if (!isAttacking && !foot.IsTouchingLayers(LayerMask.GetMask("Ladder")))
             {
                 isAttacking = true;
-                ChangeAnimationState(AnimationState.Player_Attack.ToString());
+                animator.SetTrigger("attack");
                 Invoke(nameof(AttackComplete), attackDelay);
             }
         }      
@@ -133,10 +114,4 @@ public class PlayerController : MonoBehaviour
         facingRight = !facingRight;
     }
 
-    void ChangeAnimationState(string newState)
-    {
-        if (currentState == newState) { return; } //Stop the same animation from interrupting itself
-        animator.Play(newState); //Play animation state
-        currentState = newState; //Reassign the current state
-    }
 }
