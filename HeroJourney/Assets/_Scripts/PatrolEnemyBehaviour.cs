@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class EnemyBehaviour : MonoBehaviour
+public class PatrolEnemyBehaviour : MonoBehaviour
 {
     [Header("Set Up")]
     [SerializeField] EnemyInfo info;
-    [SerializeField] Transform attackPoint;
+    [SerializeField] Vector3 attackOffset;
     [SerializeField] Transform pointA;
     [SerializeField] Transform pointB;
     [SerializeField] DetectArea detectArea; //Checking area whenever player entry
@@ -17,6 +17,7 @@ public class EnemyBehaviour : MonoBehaviour
     [SerializeField] float attackDelay; //Time between enemy attack actions
 
     private bool isAttacking;
+    private float currentHealth;
     private Animator animator;
     private Transform currentPoint;
 
@@ -29,6 +30,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         currentPoint = pointA;
         health = info.health;
+        currentHealth = health;
         moveSpeed = info.moveSpeed;
         attackDamage = info.damage;
         attackRange = info.attackRange;
@@ -51,7 +53,7 @@ public class EnemyBehaviour : MonoBehaviour
     {
         GameObject target = detectArea.target; //Player object
         var targetPos = new Vector2(target.transform.position.x, transform.position.y); //Player position
-        float distance = Vector2.Distance(transform.position, targetPos) - 0.5f; //Distance between player and enemy
+        float distance = Vector2.Distance(transform.position, targetPos) - 1f; //Distance between player and enemy
 
         // Chasing and attacking action
         if (attackRange < distance && !isAttacking) 
@@ -62,12 +64,12 @@ public class EnemyBehaviour : MonoBehaviour
         else if (attackRange >= distance && !isAttacking)
         {
             isAttacking = true;
+
             animator.SetBool("isWalking", false);
             animator.SetTrigger("attack");
+
             Invoke(nameof(AttackComplete), attackDelay);
         }
-
-        // Deal damge to player
 
         // Flip sprite
         Vector3 rotation = transform.rotation.eulerAngles;
@@ -85,9 +87,36 @@ public class EnemyBehaviour : MonoBehaviour
         }      
     }
 
+    void Attack() //This method will be called in animation event
+    {
+        // Set attack point
+        Vector3 pos = transform.position;
+        pos += transform.right * attackOffset.x;
+        pos += transform.up * attackOffset.y;
+
+        Collider2D hitPlayer = Physics2D.OverlapCircle(pos, attackRange, LayerMask.GetMask("Player"));
+
+        if (hitPlayer != null)
+        {
+            hitPlayer.GetComponent<PlayerController>().TakeDamage(attackDamage);
+        }
+    }
+
     void AttackComplete()
     {
         isAttacking = false;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+
+        print("Enemy health: " + currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     void EnemyPatrolling()
@@ -124,9 +153,13 @@ public class EnemyBehaviour : MonoBehaviour
 
     void OnDrawGizmos()
     {
+        Vector3 pos = transform.position;
+        pos += transform.right * attackOffset.x;
+        pos += transform.up * attackOffset.y;
+
         Gizmos.DrawWireSphere(pointA.position, 0.5f);
         Gizmos.DrawWireSphere(pointB.position, 0.5f);
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        Gizmos.DrawWireSphere(pos, attackRange);
         Gizmos.DrawLine(pointA.position, pointB.position);
     }
 }

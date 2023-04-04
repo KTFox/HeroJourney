@@ -3,13 +3,20 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Set Up")]
+    [SerializeField] Vector3 attackOffset = new Vector3(-0.9f, -0.2f, 0);
+
     [Header("Player info")]
+    [SerializeField] float health = 100f;
     [SerializeField] float moveSpeed = 500f;
     [SerializeField] float jumpForce = 850f;
     [SerializeField] float climbSpeed = 400f;
+    [SerializeField] float attackDamage = 10f;
+    [SerializeField] float attackRange = 0.7f;
     [SerializeField] float attackDelay = 0.5f;
 
     private float defaultGravity;
+    private float currentHealth;
     private bool facingRight;
     private bool isAttacking;
     private Vector2 moveInput;
@@ -27,6 +34,8 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         defaultGravity = rb.gravityScale;
+        currentHealth = health;
+
     }
 
     void FixedUpdate()
@@ -40,8 +49,6 @@ public class PlayerController : MonoBehaviour
             rb.velocity = new Vector2(rb.velocity.x, moveInput.y * climbSpeed * Time.deltaTime);
         }
         else { rb.gravityScale = defaultGravity; }
-
-        // Deal damage to enemy
 
         // Flip 
         if (moveInput.x > 0 && !facingRight)
@@ -92,16 +99,46 @@ public class PlayerController : MonoBehaviour
         {
             if (!isAttacking && !foot.IsTouchingLayers(LayerMask.GetMask("Ladder")))
             {
-                isAttacking = true;
-                animator.SetTrigger("attack");
+                Attack();
                 Invoke(nameof(AttackComplete), attackDelay);
             }
         }      
     }
 
+    void Attack()
+    {
+        isAttacking = true;
+
+        animator.SetTrigger("attack");
+
+        // Set attack point
+        Vector3 pos = transform.position;
+        pos += transform.right * attackOffset.x;
+        pos += transform.up * attackOffset.y;
+
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(pos, attackRange, LayerMask.GetMask("Enemy"));
+
+        foreach(Collider2D enemy in hitEnemies)
+        {
+            enemy.GetComponent<PatrolEnemyBehaviour>().TakeDamage(attackDamage);
+        }
+    }
+
     void AttackComplete()
     {
         isAttacking = false;
+    }
+
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+
+        print("Player health: " + currentHealth);
+
+        if (currentHealth <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     void FlipSprite()
@@ -114,4 +151,12 @@ public class PlayerController : MonoBehaviour
         facingRight = !facingRight;
     }
 
+    private void OnDrawGizmos()
+    {
+        Vector3 pos = transform.position;
+        pos += transform.right * attackOffset.x;
+        pos += transform.up * attackOffset.y;
+
+        Gizmos.DrawWireSphere(pos, attackRange);
+    }
 }
