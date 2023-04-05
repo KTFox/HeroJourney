@@ -16,8 +16,9 @@ public class PatrolEnemyBehaviour : MonoBehaviour
     [SerializeField] float attackRange; //Range that enemy can attack player
     [SerializeField] float attackDelay; //Time between enemy attack actions
 
-    private bool isAttacking;
     [HideInInspector] public float currentHealth;
+
+    private bool isAttacking;
     private Animator animator;
     private Transform currentPoint;
 
@@ -55,6 +56,21 @@ public class PatrolEnemyBehaviour : MonoBehaviour
         var targetPos = new Vector2(target.transform.position.x, transform.position.y); //Player position
         float distance = Vector2.Distance(transform.position, targetPos) - 1f; //Distance between player and enemy
 
+        // Flip sprite
+        Vector3 rotation = transform.rotation.eulerAngles;
+        if (!isAttacking)
+        {
+            if (transform.position.x < targetPos.x)
+            {
+                rotation.y = 0f;
+            }
+            else if (transform.position.x > targetPos.x)
+            {
+                rotation.y = 180f;
+            }
+            transform.eulerAngles = rotation;
+        }
+
         // Chasing and attacking action
         if (attackRange < distance && !isAttacking) 
         {
@@ -69,22 +85,7 @@ public class PatrolEnemyBehaviour : MonoBehaviour
             animator.SetTrigger("attack");
 
             Invoke(nameof(AttackComplete), attackDelay);
-        }
-
-        // Flip sprite
-        Vector3 rotation = transform.rotation.eulerAngles;
-        if (!isAttacking)
-        {
-            if (transform.position.x < targetPos.x)
-            {
-                rotation.y = 0f;
-            }
-            else if (transform.position.x > targetPos.x)
-            {
-                rotation.y = 180f;
-            }
-            transform.eulerAngles = rotation;
-        }      
+        }     
     }
 
     void Attack() //This method will be called in animation event
