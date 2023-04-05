@@ -10,26 +10,26 @@ public class PatrolEnemyBehaviour : MonoBehaviour
     [SerializeField] DetectArea detectArea; //Checking area whenever player entry
 
     [Header("Enemy info")]
-    [SerializeField] float health;
+    public float health;
     [SerializeField] float moveSpeed;
     [SerializeField] float attackDamage;
     [SerializeField] float attackRange; //Range that enemy can attack player
     [SerializeField] float attackDelay; //Time between enemy attack actions
 
     private bool isAttacking;
-    private float currentHealth;
+    [HideInInspector] public float currentHealth;
     private Animator animator;
     private Transform currentPoint;
 
     void Awake()
     {
         animator = GetComponent<Animator>();
+        health = info.health;
     }
 
     void Start()
     {
         currentPoint = pointA;
-        health = info.health;
         currentHealth = health;
         moveSpeed = info.moveSpeed;
         attackDamage = info.damage;
@@ -110,8 +110,6 @@ public class PatrolEnemyBehaviour : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
-
-        print("Enemy health: " + currentHealth);
 
         if (currentHealth <= 0)
         {
