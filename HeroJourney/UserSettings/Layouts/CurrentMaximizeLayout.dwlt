@@ -87,7 +87,7 @@ MonoBehaviour:
     m_HSlider: 0
     m_VSlider: 0
     m_IgnoreScrollWheelUntilClicked: 0
-    m_EnableMouseInput: 0
+    m_EnableMouseInput: 1
     m_EnableSliderZoomHorizontal: 0
     m_EnableSliderZoomVertical: 0
     m_UniformScale: 1
@@ -188,8 +188,8 @@ MonoBehaviour:
     y: 0
     width: 275.2
     height: 428
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 201, y: 221}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 6}
   m_Panes:
   - {fileID: 6}
@@ -229,7 +229,7 @@ MonoBehaviour:
       scrollPos: {x: 0, y: 0}
       m_SelectedIDs: 
       m_LastClickedID: 0
-      m_ExpandedIDs: 2835fffff849ffff0457ffff3086ffffce8effffe491ffff3a93ffff9493ffff4494ffff849cffff48abffff70abffffd0adffff5eb5ffffdcc1ffff0ac3ffff74f4ffff06fbffff22fbffffc65f0000826100009a6100009e610000c26100000a8000001c80000040800000c6940000e894000028a50000a0a50000aaab000098ad000024ae00002aaf0000e4b000005ab30000
+      m_ExpandedIDs: 06fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -272,8 +272,8 @@ MonoBehaviour:
     y: 0
     width: 290.39996
     height: 428
-  m_MinSize: {x: 240, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 242, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 8}
   m_Panes:
   - {fileID: 8}
@@ -623,9 +623,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 960.0001, y: 422.2392, z: 0}
+    m_Target: {x: 8.361278, y: 3.8625708, z: -0.09195477}
     speed: 2
-    m_Value: {x: 960.0001, y: 422.2392, z: 0}
+    m_Value: {x: 8.361278, y: 3.8625708, z: -0.09195477}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -676,9 +676,9 @@ MonoBehaviour:
     speed: 2
     m_Value: {x: 0, y: 0, z: 0, w: 1}
   m_Size:
-    m_Target: 385.66718
+    m_Target: 12.252324
     speed: 2
-    m_Value: 385.66718
+    m_Value: 12.252324
   m_Ortho:
     m_Target: 1
     speed: 2
@@ -774,22 +774,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/_Scripts
+    - Assets/Sprites/Environment
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/_Scripts
+  - Assets/Sprites/Environment
   m_LastFoldersGridSize: -1
   m_LastProjectPath: D:\Unity Projects\HeroJourney_Repo\HeroJourney
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 3e630000
-    m_LastClickedID: 25406
-    m_ExpandedIDs: 0000000036630000386300003a6300003c6300003e630000
+    scrollPos: {x: 0, y: 38.200012}
+    m_SelectedIDs: c4630000
+    m_LastClickedID: 25540
+    m_ExpandedIDs: 000000006e630000706300007263000074630000be630000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -817,7 +817,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000036630000386300003a6300003c6300003e630000
+    m_ExpandedIDs: 000000006e630000706300007263000074630000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -1035,8 +1035,8 @@ MonoBehaviour:
     y: 0
     width: 353.59998
     height: 722.8
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 71}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 17}
   m_Panes:
   - {fileID: 17}
