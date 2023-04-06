@@ -8,6 +8,9 @@ public class BowBone : PatrollingBehaviour
 
     public override void Attack()
     {
-        Instantiate(arrow, arrowPos.position, Quaternion.identity);
+        if (!beAttacked)
+        {
+            Instantiate(arrow, arrowPos.position, Quaternion.identity);
+        }
     }
 }

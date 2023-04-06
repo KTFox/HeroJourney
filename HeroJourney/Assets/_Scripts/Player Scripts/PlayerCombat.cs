@@ -14,6 +14,7 @@ public class PlayerCombat : MonoBehaviour
     [SerializeField] float attackDelay = 0.5f;
 
     private bool isAttacking;
+    private bool beAttacked;
     private Collider2D foot;
     private Animator animator;
 
@@ -44,16 +45,19 @@ public class PlayerCombat : MonoBehaviour
 
     void Attack()
     {
-        isAttacking = true;
-
-        animator.SetTrigger("attack");
-
-        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, LayerMask.GetMask("Enemy"));
-
-        foreach (Collider2D enemy in hitEnemies)
+        if (!beAttacked)
         {
-            enemy.GetComponent<PatrollingBehaviour>().TakeDamage(attackDamage);
-        }
+            isAttacking = true;
+
+            animator.SetTrigger("attack");
+
+            Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, LayerMask.GetMask("Enemy"));
+
+            foreach (Collider2D enemy in hitEnemies)
+            {
+                enemy.GetComponent<PatrollingBehaviour>().TakeDamage(attackDamage);
+            }
+        }      
     }
 
     void AttackComplete()
@@ -63,12 +67,23 @@ public class PlayerCombat : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        animator.SetTrigger("beAttacked");
+
+        beAttacked = true;
+        
         currentHealth -= damage;
 
         if (currentHealth <= 0)
         {
             SceneManager.LoadScene(2);
         }
+
+        Invoke(nameof(BeNotAttack), 0.3f);
+    }
+
+    void BeNotAttack()
+    {
+        beAttacked = false;
     }
 
     private void OnDrawGizmos()

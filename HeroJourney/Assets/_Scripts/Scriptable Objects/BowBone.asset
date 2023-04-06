@@ -15,5 +15,6 @@ MonoBehaviour:
   health: 50
   moveSpeed: 3
   damage: 20
+  attackOffset: {x: 0, y: 0, z: 0}
   attackRange: 8
-  attackDelay: 1
+  attackDelay: 1.5

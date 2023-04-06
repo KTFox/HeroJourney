@@ -19,6 +19,7 @@ public class PatrollingBehaviour : MonoBehaviour
     [HideInInspector] public float currentHealth;
 
     private bool isAttacking;
+    public bool beAttacked;
     private Animator animator;
     private Transform currentPoint;
 
@@ -101,12 +102,23 @@ public class PatrollingBehaviour : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
+        animator.SetTrigger("beAttacked");
+
+        beAttacked = true;
+        
         currentHealth -= damage;
 
         if (currentHealth <= 0)
         {
             Destroy(gameObject);
         }
+
+        Invoke(nameof(NotBeAttacked), 0.5f);
+    }
+
+    void NotBeAttacked()
+    {
+        beAttacked = false;
     }
 
     void EnemyPatrolling()
