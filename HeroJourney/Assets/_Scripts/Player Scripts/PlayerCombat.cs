@@ -15,10 +15,10 @@ public class PlayerCombat : MonoBehaviour
 
     private bool isAttacking;
     private bool beAttacked;
+    private bool isDead;
     private Collider2D foot;
     private Animator animator;
 
-    [HideInInspector] public bool isDead;
     [HideInInspector] public float currentHealth;
 
     void Awake()
@@ -31,6 +31,7 @@ public class PlayerCombat : MonoBehaviour
     {
         currentHealth = health;
     }
+
     void OnHit(InputValue value)
     {
         if (!isAttacking && !isDead && !foot.IsTouchingLayers(LayerMask.GetMask("Ladder")))

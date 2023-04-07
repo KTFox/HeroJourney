@@ -10,16 +10,16 @@ public class PatrollingBehaviour : MonoBehaviour
 
     [Header("Enemy info")]
     public float health;
-    [SerializeField] float moveSpeed;
+    public float moveSpeed;
     public float attackDamage;
     public Vector3 attackOffset;
     public float attackRange; //Range that enemy can attack player
-    [SerializeField] float attackDelay; //Time between enemy attack actions
+    public float attackDelay; //Time between enemy attack actions
 
     [HideInInspector] public float currentHealth;
+    [HideInInspector] public bool beAttacked;
 
     private bool isAttacking;
-    public bool beAttacked;
     private Animator animator;
     private Transform currentPoint;
 
@@ -86,11 +86,11 @@ public class PatrollingBehaviour : MonoBehaviour
             animator.SetBool("isWalking", false);
             animator.SetTrigger("attack");
 
-            Invoke(nameof(AttackComplete), attackDelay); //Set delay time for attack
+            Invoke(nameof(AttackComplete), attackDelay); 
         }     
     }
 
-    public virtual void Attack() //This method will be called in animation event
+    public virtual void Attack() 
     {
         //Attacking action
     }

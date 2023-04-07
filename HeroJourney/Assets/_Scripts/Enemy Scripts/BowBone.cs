@@ -6,7 +6,7 @@ public class BowBone : PatrollingBehaviour
     [SerializeField] GameObject arrow;
     [SerializeField] Transform arrowPos;
 
-    public override void Attack()
+    public override void Attack() //This method will be call in animation event
     {
         if (!beAttacked)
         {

@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour
 {
-    [SerializeField] float arrowSpeed;
+    public float arrowSpeed;
     public float arrowDamage;
 
     private GameObject player;

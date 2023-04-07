@@ -1010,7 +1010,7 @@ TextureImporter:
         width: 27
         height: 41
       alignment: 9
-      pivot: {x: 0.44, y: 0}
+      pivot: {x: 0.44000018, y: 0.40192097}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1114,8 +1114,8 @@ TextureImporter:
         y: 800
         width: 68
         height: 61
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.50000024, y: 0.46749428}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -1786,12 +1786,12 @@ TextureImporter:
       name: TX Village Props - Tree 01
       rect:
         serializedVersion: 2
-        x: 833
+        x: 834
         y: 417
         width: 153
         height: 161
       alignment: 9
-      pivot: {x: 0.52360046, y: 0}
+      pivot: {x: 0.5194231, y: 0.36917475}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -2903,8 +2903,8 @@ TextureImporter:
         y: 416
         width: 120
         height: 137
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
+      alignment: 9
+      pivot: {x: 0.48402253, y: 0.38719746}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
