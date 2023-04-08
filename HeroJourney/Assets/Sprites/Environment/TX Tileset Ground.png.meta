@@ -2982,7 +2982,7 @@ TextureImporter:
       name: TX Tileset Ground_108
       rect:
         serializedVersion: 2
-        x: 0
+        x: 2
         y: 96
         width: 32
         height: 32
