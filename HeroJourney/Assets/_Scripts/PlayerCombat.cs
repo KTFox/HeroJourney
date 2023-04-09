@@ -54,10 +54,18 @@ public class PlayerCombat : MonoBehaviour
 
             Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(attackPoint.position, attackRange, LayerMask.GetMask("Enemy"));
 
-            foreach (Collider2D enemy in hitEnemies)
+            foreach(Collider2D enemy in hitEnemies)
             {
-                enemy.GetComponent<PatrollingBehaviour>().TakeDamage(attackDamage);
+                if (enemy.GetComponent<PatrollingBehaviour>() != null)
+                {
+                    enemy.GetComponent<PatrollingBehaviour>().TakeDamage(attackDamage);
+                }
+                else if (enemy.GetComponent<Boss>() != null)
+                {
+                    enemy.GetComponent<Boss>().TakeDamage(attackDamage);
+                }
             }
+            
         }      
     }
 
@@ -76,7 +84,7 @@ public class PlayerCombat : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            SceneManager.LoadScene(2);
+            SceneManager.LoadScene(3);
         }
 
         Invoke(nameof(BeNotAttack), 0.3f);

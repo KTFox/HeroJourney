@@ -12,6 +12,12 @@ EditorBuildSettings:
     path: Assets/Scenes/BasePlatform.unity
     guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
+    path: Assets/Scenes/Cemetery.unity
+    guid: abcec480505427c4ea35f1f85548aafe
+  - enabled: 1
+    path: Assets/Scenes/Boss.unity
+    guid: af4c3553309e1a9428149329d74373fa
+  - enabled: 1
     path: Assets/Scenes/GameOver.unity
     guid: ec6d85152e2ef7444b552b4be7391e21
   m_configObjects: {}

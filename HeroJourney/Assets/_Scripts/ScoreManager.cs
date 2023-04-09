@@ -16,6 +16,5 @@ public class ScoreManager : MonoBehaviour
     public void increasePointKill()
     {
         enemyKilled++;
-        print(enemyKilled);
     }
 }
