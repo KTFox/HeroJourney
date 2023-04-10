@@ -56,7 +56,7 @@ public class Boss : MonoBehaviour
     {
         currentHealth -= damgage;
 
-        if (currentHealth > 0 && currentHealth <= 100)
+        if (currentHealth > 0 && currentHealth <= 150)
         {
             GetComponent<Animator>().SetBool("hasEnraged", true);
         }
