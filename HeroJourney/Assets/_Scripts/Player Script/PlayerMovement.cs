@@ -11,7 +11,6 @@ public class PlayerMovement : MonoBehaviour
 
     private float defaultGravity;
     private bool facingRight;
-
     private Vector2 moveInput;
     private BoxCollider2D foot;
     private Rigidbody2D rb;
@@ -29,11 +28,13 @@ public class PlayerMovement : MonoBehaviour
     void Start()
     {
         defaultGravity = rb.gravityScale;
+        facingRight = true;
     }
 
     void FixedUpdate()
     {
-        rb.velocity = new Vector2(moveInput.x * moveSpeed * Time.deltaTime, rb.velocity.y); //Player horizontal moving
+        // Player horizontal moving
+        rb.velocity = new Vector2(moveInput.x * moveSpeed * Time.deltaTime, rb.velocity.y); 
 
         // Player ladder climbing
         if (foot.IsTouchingLayers(LayerMask.GetMask("Ladder")))

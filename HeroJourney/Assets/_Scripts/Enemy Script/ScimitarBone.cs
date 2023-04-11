@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ScimitarBone : PatrollingBehaviour
+public class ScimitarBone : PatrolEnemy
 {
     public override void Attack() //This method will be called in animation event
     {

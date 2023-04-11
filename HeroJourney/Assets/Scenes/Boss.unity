@@ -1187,7 +1187,7 @@ GameObject:
   - component: {fileID: 1295442937}
   - component: {fileID: 1295442936}
   - component: {fileID: 1295442935}
-  m_Layer: 6
+  m_Layer: 11
   m_Name: Platform
   m_TagString: Platform
   m_Icon: {fileID: 0}
@@ -9887,7 +9887,7 @@ GameObject:
   - component: {fileID: 1959812008}
   - component: {fileID: 1959812007}
   - component: {fileID: 1959812006}
-  m_Layer: 7
+  m_Layer: 12
   m_Name: Ladder
   m_TagString: Untagged
   m_Icon: {fileID: 0}

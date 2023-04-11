@@ -16,8 +16,13 @@ public class HealthChess : MonoBehaviour
         {
             animator.SetBool("open", true);
 
-            collision.GetComponent<PlayerCombat>().currentHealth += 50;
+            if (collision.GetComponent<PlayerCombat>().currentHealth + 50 <= collision.GetComponent<PlayerCombat>().health)
+            {
 
+                collision.GetComponent<PlayerCombat>().currentHealth += 50;
+            }
+            else { collision.GetComponent<PlayerCombat>().currentHealth = collision.GetComponent<PlayerCombat>().health; }
+            
             hasOpened = true;
         }
     }

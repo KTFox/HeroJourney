@@ -1,20 +1,20 @@
 using UnityEngine;
 
-public class PatrollingBehaviour : MonoBehaviour
+public class PatrolEnemy : MonoBehaviour
 {
     [Header("Set Up")]
     [SerializeField] EnemyInfo info;
     [SerializeField] Transform pointA;
     [SerializeField] Transform pointB;
-    [SerializeField] DetectArea detectArea; //Checking area whenever player entry
+    [SerializeField] DetectArea detectArea; 
 
     [Header("Enemy info")]
-    public float health;
+    public float maxHealth;
     public float moveSpeed;
     public float attackDamage;
     public Vector3 attackOffset;
-    public float attackRange; //Range that enemy can attack player
-    public float attackDelay; //Time between enemy attack actions
+    public float attackRange; 
+    public float attackDelay; 
 
     [HideInInspector] public float currentHealth;
     [HideInInspector] public bool beAttacked;
@@ -26,14 +26,14 @@ public class PatrollingBehaviour : MonoBehaviour
     void Awake()
     {
         animator = GetComponent<Animator>();
-        health = info.health;
+        maxHealth = info.health;
     }
 
     void Start()
     {
         SetRandomPoint();
 
-        currentHealth = health;
+        currentHealth = maxHealth;
         moveSpeed = info.moveSpeed;
         attackDamage = info.damage;
         attackOffset = info.attackOffset;
@@ -125,12 +125,10 @@ public class PatrollingBehaviour : MonoBehaviour
 
     void EnemyPatrolling()
     {
-        Vector3 rotation = transform.rotation.eulerAngles;
-        float distance = Vector2.Distance(transform.position, currentPoint.position);
-
         animator.SetBool("isWalking", true);
 
         // Set patrol point
+        float distance = Vector2.Distance(transform.position, currentPoint.position);
         if (currentPoint == pointA && distance < 0.5f)
         {
             currentPoint = pointB;
@@ -141,6 +139,7 @@ public class PatrollingBehaviour : MonoBehaviour
         }
 
         // Enemy patrolling
+        Vector3 rotation = transform.rotation.eulerAngles;
         if (currentPoint == pointA)
         {
             transform.position = Vector2.MoveTowards(transform.position, new Vector2(pointA.position.x, transform.position.y), moveSpeed * Time.deltaTime);
@@ -151,8 +150,7 @@ public class PatrollingBehaviour : MonoBehaviour
             transform.position = Vector2.MoveTowards(transform.position, new Vector2(pointB.position.x, transform.position.y), moveSpeed * Time.deltaTime);
             rotation.y = 0f;
         }
-
-        transform.eulerAngles = rotation; //Flip sprite
+        transform.eulerAngles = rotation;
     }
 
     void SetRandomPoint()
@@ -168,13 +166,14 @@ public class PatrollingBehaviour : MonoBehaviour
 
     void OnDrawGizmos()
     {
+        // Draw attack sphere
         Vector3 pos = transform.position;
         pos += transform.right * attackOffset.x;
         pos += transform.up * attackOffset.y;
+        Gizmos.DrawWireSphere(pos, attackRange);
 
         Gizmos.DrawWireSphere(pointA.position, 0.5f);
         Gizmos.DrawWireSphere(pointB.position, 0.5f);
-        Gizmos.DrawWireSphere(pos, attackRange);
         Gizmos.DrawLine(pointA.position, pointB.position);
     }
 }

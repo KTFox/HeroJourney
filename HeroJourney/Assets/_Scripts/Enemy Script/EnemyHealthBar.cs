@@ -8,13 +8,13 @@ public class EnemyHealthBar : MonoBehaviour
 
     void Start()
     {
-        healthBar.maxValue = GetComponent<PatrollingBehaviour>().health;
-        healthBar.value = GetComponent<PatrollingBehaviour>().health;
+        healthBar.maxValue = GetComponent<PatrolEnemy>().maxHealth;
+        healthBar.value = GetComponent<PatrolEnemy>().maxHealth;
     }
 
     void Update()
     {
-        healthBar.value = GetComponent<PatrollingBehaviour>().currentHealth;
+        healthBar.value = GetComponent<PatrolEnemy>().currentHealth;
         healthBar.transform.position = Camera.main.WorldToScreenPoint(transform.position + offset);
     }
 }

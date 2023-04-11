@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class BowBone : PatrollingBehaviour
+public class BowBone : PatrolEnemy
 {
     [Header("Bow Set Up")]
     [SerializeField] GameObject arrow;
