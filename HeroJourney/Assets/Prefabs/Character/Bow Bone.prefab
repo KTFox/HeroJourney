@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 6996144347718901878}
   - component: {fileID: 6996144347718901872}
   - component: {fileID: 6996144347718901831}
-  m_Layer: 9
+  m_Layer: 13
   m_Name: BowBoneCharacter
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -219,15 +219,16 @@ MonoBehaviour:
   info: {fileID: 11400000, guid: 656bb5caca288184f8c59afa37d01aab, type: 2}
   pointA: {fileID: 6996144348109472348}
   pointB: {fileID: 6996144347927726505}
-  detectArea: {fileID: 6996144348674212782}
-  health: 0
+  detectArea: {fileID: 7756684271925502803}
+  maxHealth: 0
   moveSpeed: 0
   attackDamage: 0
   attackOffset: {x: 0, y: 0, z: 0}
   attackRange: 0
-  attackDelay: 0
   currentHealth: 0
   beAttacked: 0
+  isAttacking: 0
+  animator: {fileID: 0}
   arrow: {fileID: 4748351295070220579, guid: 30ef63ca2c51177409fff4ab5ec1b1b3, type: 3}
   arrowPos: {fileID: 3390020442726202585}
 --- !u!1 &6996144347927726510
@@ -254,7 +255,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6996144347927726510}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.54, y: -0.45, z: 0}
+  m_LocalPosition: {x: 1.27, y: -0.45, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -285,7 +286,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6996144348109472349}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10.55, y: -0.45, z: 0}
+  m_LocalPosition: {x: -2.21, y: -0.45, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -454,7 +455,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6996144348674212780}
   - component: {fileID: 6996144348674212783}
-  - component: {fileID: 6996144348674212782}
+  - component: {fileID: 7756684271925502803}
   m_Layer: 0
   m_Name: DetectArea
   m_TagString: Untagged
@@ -470,7 +471,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6996144348674212781}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: -4.8, y: -0.2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -490,7 +491,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.95165205, y: -0.2699623}
+  m_Offset: {x: 0.46349716, y: -2.1189911}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -501,9 +502,9 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 18.50412, y: 3.3033113}
+  m_Size: {x: 11.236649, y: 7.001369}
   m_EdgeRadius: 0
---- !u!114 &6996144348674212782
+--- !u!114 &7756684271925502803
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

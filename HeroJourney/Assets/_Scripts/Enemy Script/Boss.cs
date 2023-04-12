@@ -7,7 +7,7 @@ public class Boss : MonoBehaviour
     [Header("Boss info")]
     public float health = 300f;
     public float attackDamage = 25f;
-    public float attackRange = 2f;
+    public float attackRange = 3f;
     public Vector3 attackOffset;
     private Transform player;
 

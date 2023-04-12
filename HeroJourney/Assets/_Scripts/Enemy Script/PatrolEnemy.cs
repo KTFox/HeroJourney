@@ -14,13 +14,12 @@ public class PatrolEnemy : MonoBehaviour
     public float attackDamage;
     public Vector3 attackOffset;
     public float attackRange; 
-    public float attackDelay; 
 
     [HideInInspector] public float currentHealth;
     [HideInInspector] public bool beAttacked;
+    [HideInInspector] public bool isAttacking;
+    [HideInInspector] public Animator animator;
 
-    private bool isAttacking;
-    private Animator animator;
     private Transform currentPoint;
 
     void Awake()
@@ -38,7 +37,11 @@ public class PatrolEnemy : MonoBehaviour
         attackDamage = info.damage;
         attackOffset = info.attackOffset;
         attackRange = info.attackRange;
-        attackDelay = info.attackDelay;
+    }
+
+    void Update()
+    {
+        CheckAnimationState();
     }
 
     void FixedUpdate()
@@ -75,19 +78,15 @@ public class PatrolEnemy : MonoBehaviour
         }
 
         // Chasing and attacking action
-        if (attackRange < distance && !isAttacking) 
+        if (attackRange < distance && !isAttacking && !beAttacked) 
         {
             animator.SetBool("isWalking", true);
             transform.position = Vector2.MoveTowards(transform.position, targetPos, moveSpeed * Time.deltaTime);
         }
-        else if (attackRange >= distance && !isAttacking)
+        else if (attackRange >= distance && !isAttacking && !beAttacked)
         {
-            isAttacking = true;
-
             animator.SetBool("isWalking", false);
             animator.SetTrigger("attack");
-
-            Invoke(nameof(AttackComplete), attackDelay); 
         }     
     }
 
@@ -96,9 +95,9 @@ public class PatrolEnemy : MonoBehaviour
         //Attacking action
     }
 
-    void AttackComplete()
+    public virtual void CheckAnimationState()
     {
-        isAttacking = false;
+        // Check animation state
     }
 
     public void TakeDamage(float damage)
@@ -114,13 +113,6 @@ public class PatrolEnemy : MonoBehaviour
             Destroy(gameObject);
             ScoreManager.instance.increasePointKill();
         }
-
-        Invoke(nameof(NotBeAttacked), 0.5f);
-    }
-
-    void NotBeAttacked()
-    {
-        beAttacked = false;
     }
 
     void EnemyPatrolling()

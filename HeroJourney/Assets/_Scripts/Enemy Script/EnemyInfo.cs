@@ -8,5 +8,4 @@ public class EnemyInfo : ScriptableObject
     public float damage;
     public Vector3 attackOffset;
     public float attackRange;
-    public float attackDelay;
 }

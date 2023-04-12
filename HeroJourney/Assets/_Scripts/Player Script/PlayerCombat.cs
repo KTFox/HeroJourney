@@ -75,7 +75,7 @@ public class PlayerCombat : MonoBehaviour
         }
     }
 
-    public void CheckAnimationState()
+    void CheckAnimationState()
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 

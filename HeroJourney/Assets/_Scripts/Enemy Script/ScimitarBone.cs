@@ -18,4 +18,23 @@ public class ScimitarBone : PatrolEnemy
             }
         }
     }
+
+    public override void CheckAnimationState()
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        // Being attacekd state
+        if (stateInfo.IsName("ScimitarBone_BeAttacked") && stateInfo.normalizedTime < 1.0f)
+        {
+            beAttacked = true;
+        }
+        else { beAttacked = false; }
+
+        // Attacking state
+        if (stateInfo.IsName("BoneScimitar_Attack") && stateInfo.normalizedTime < 1.0f)
+        {
+            isAttacking = true;
+        }
+        else { isAttacking = false; }
+    }
 }

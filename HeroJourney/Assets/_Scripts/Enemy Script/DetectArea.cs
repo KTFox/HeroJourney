@@ -10,6 +10,7 @@ public class DetectArea : MonoBehaviour
         {
             target = collision.gameObject;
         }
+        
     }
 
     private void OnTriggerExit2D(Collider2D collision)

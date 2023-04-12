@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2490638214220763985}
   - component: {fileID: 2490638214220763984}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: EnemyHealthBar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.95165205, y: -0.2699623}
+  m_Offset: {x: 1.0466709, y: -0.2699623}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -147,7 +147,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 18.50412, y: 3.3033113}
+  m_Size: {x: 8.909672, y: 3.3033113}
   m_EdgeRadius: 0
 --- !u!114 &2490638214382655415
 MonoBehaviour:
@@ -171,7 +171,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2490638214419844553}
-  m_Layer: 13
+  m_Layer: 0
   m_Name: Scimitar Bone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -208,7 +208,7 @@ GameObject:
   - component: {fileID: 2490638214568831408}
   - component: {fileID: 2490638214568831410}
   - component: {fileID: 2490638214568831409}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -285,7 +285,7 @@ GameObject:
   - component: {fileID: 2490638214782867717}
   - component: {fileID: 2490638214782867716}
   - component: {fileID: 2490638214782867723}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -346,10 +346,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -383,7 +383,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2490638215037812489}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Fill Area
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -435,7 +435,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2490638215246585271}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 8.54, y: -0.45, z: 0}
+  m_LocalPosition: {x: 5.94, y: -0.45, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -457,7 +457,7 @@ GameObject:
   - component: {fileID: 2490638215442838639}
   - component: {fileID: 2490638215442838633}
   - component: {fileID: 2042609387}
-  m_Layer: 9
+  m_Layer: 13
   m_Name: ScimitarBoneCharacter
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -630,14 +630,15 @@ MonoBehaviour:
   pointA: {fileID: 2490638216092440133}
   pointB: {fileID: 2490638215246585264}
   detectArea: {fileID: 2490638214382655415}
-  health: 0
+  maxHealth: 0
   moveSpeed: 0
   attackDamage: 0
   attackOffset: {x: 0, y: 0, z: 0}
   attackRange: 0
-  attackDelay: 0
   currentHealth: 0
   beAttacked: 0
+  isAttacking: 0
+  animator: {fileID: 0}
 --- !u!1 &2490638215720424418
 GameObject:
   m_ObjectHideFlags: 0
@@ -649,7 +650,7 @@ GameObject:
   - component: {fileID: 2490638215720424419}
   - component: {fileID: 2490638215720424445}
   - component: {fileID: 2490638215720424444}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Fill
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -738,7 +739,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2490638216092440132}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -10.55, y: -0.45, z: 0}
+  m_LocalPosition: {x: -3.99, y: -0.45, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

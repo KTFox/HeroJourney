@@ -13,4 +13,23 @@ public class BowBone : PatrolEnemy
             Instantiate(arrow, arrowPos.position, Quaternion.identity);
         }
     }
+
+    public override void CheckAnimationState()
+    {
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        // Being attacekd state
+        if (stateInfo.IsName("BowBone_BeAttacked") && stateInfo.normalizedTime < 1.0f)
+        {
+            beAttacked = true;
+        }
+        else { beAttacked = false; }
+
+        // Attacking state
+        if (stateInfo.IsName("BowBone_Attack") && stateInfo.normalizedTime < 1.0f)
+        {
+            isAttacking = true;
+        }
+        else { isAttacking = false; }
+    }
 }

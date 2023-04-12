@@ -16,8 +16,6 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private Animator animator;
 
- 
-
     void Awake()
     {
         foot = GetComponent<BoxCollider2D>();
