@@ -15,6 +15,8 @@ public class SpikeTrap : MonoBehaviour
         {
             GetComponent<Renderer>().enabled = true;
 
+            AudioSystem.instance.PlaySound("SpikeTrap");
+
             collision.gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(0, jumpForce);
 
             collision.gameObject.GetComponent<PlayerCombat>().TakeDamage(10);

@@ -10,6 +10,8 @@ public class BowBone : PatrolEnemy
     {
         if (!beAttacked)
         {
+            AudioSystem.instance.PlaySound("BowHit");
+
             Instantiate(arrow, arrowPos.position, Quaternion.identity);
         }
     }

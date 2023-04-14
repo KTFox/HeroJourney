@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Boss : MonoBehaviour
 {
@@ -21,10 +20,13 @@ public class Boss : MonoBehaviour
     void Start()
     {
         currentHealth = health;
+        AudioSystem.instance.PlaySound("BossScream");
     }
 
     public void Attack()
     {
+        AudioSystem.instance.PlaySound("BossHit");
+
         Vector3 pos = transform.position;
         pos += transform.right * attackOffset.x;
         pos += transform.up * attackOffset.y;
@@ -63,7 +65,13 @@ public class Boss : MonoBehaviour
         else if (currentHealth <= 0)
         {
             GetComponent<Animator>().SetBool("hasDead", true);
+            Invoke(nameof(LoadWinScene), 2f);
         }
+    }
+
+    void LoadWinScene()
+    {
+        SceneManager.LoadScene("Win");
     }
 
     void OnDrawGizmos()

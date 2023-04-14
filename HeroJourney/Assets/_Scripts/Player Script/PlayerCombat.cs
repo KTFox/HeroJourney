@@ -17,19 +17,12 @@ public class PlayerCombat : MonoBehaviour
     private Collider2D foot;
     private Animator animator;
 
-    [HideInInspector] public float currentHealth;
-
     void Awake()
     {
         animator = GetComponent<Animator>();
         foot = GetComponent<BoxCollider2D>();
     }
-
-    void Start()
-    {
-        currentHealth = health;
-    }
-
+  
     void Update()
     {
         CheckAnimationState();
@@ -42,6 +35,7 @@ public class PlayerCombat : MonoBehaviour
             if (value.isPressed)
             {
                 animator.SetTrigger("attack");
+                AudioSystem.instance.PlaySound("PlayerHit");
             }
         }
     }
@@ -66,12 +60,12 @@ public class PlayerCombat : MonoBehaviour
     public void TakeDamage(float damage)
     {
         animator.SetTrigger("beAttacked");
-        
-        currentHealth -= damage;
 
-        if (currentHealth <= 0)
+        PlayerPrefs.SetFloat("CurrentHealth", PlayerPrefs.GetFloat("CurrentHealth") - damage);
+
+        if (PlayerPrefs.GetFloat("CurrentHealth") <= 0)
         {
-            SceneManager.LoadScene(4);
+            SceneManager.LoadScene("GameOver");
         }
     }
 

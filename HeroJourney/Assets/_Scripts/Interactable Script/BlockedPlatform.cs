@@ -15,7 +15,7 @@ public class BlockedPlatform : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            if (ScoreManager.instance.enemyKilled < 7)
+            if (PlayerPrefs.GetInt("EnemyKilled") < 7)
             {
                 panel.SetActive(true);
             }

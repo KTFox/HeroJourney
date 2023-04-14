@@ -111,7 +111,7 @@ public class PatrolEnemy : MonoBehaviour
         if (currentHealth <= 0)
         {
             Destroy(gameObject);
-            ScoreManager.instance.increasePointKill();
+            PlayerPrefs.SetInt("EnemyKilled", PlayerPrefs.GetInt("EnemyKilled") + 1);
         }
     }
 
